@@ -1,7 +1,6 @@
 import unittest
 from triangulo import Triangulo
 
-
 class TrianguloTest(unittest.TestCase):
     # Se é triângulo válido
     def test_ehTriangulo(self):
@@ -21,13 +20,11 @@ class TrianguloTest(unittest.TestCase):
         with self.assertRaises(TypeError):
             t = Triangulo(a,b,c)
 
-
 class TrianguloEquilateroTest(unittest.TestCase):
     def test_ehEquilatero(self):
         a, b, c = 10, 10, 10
         t = Triangulo(a,b,c)
         self.assertTrue(t.ehEquilatero)
-
 
     def test_naoEhEquilatero(self):
         # A != C
@@ -45,20 +42,16 @@ class TrianguloEquilateroTest(unittest.TestCase):
         t = Triangulo(a,b,c)
         self.assertFalse(t.ehEquilatero())
 
-
         # Não ser triângulo
         a,b,c = 10, 50, 15
         t = Triangulo(a,b,c)
         self.assertFalse(t.ehEquilatero())
-
-
 
 class TrianguloIscolesTest(unittest.TestCase):
     def test_ehIsoceles(self):
         a,b,c = 10, 10, 15
         t = Triangulo(a,b,c)
         self.assertTrue(t.ehIsosceles())
-
 
     def test_naoEhIsoceles(self):
         # A = B e A = C
@@ -76,13 +69,11 @@ class TrianguloIscolesTest(unittest.TestCase):
         t = Triangulo(a,b,c)
         self.assertFalse(t.ehEquilatero())
 
-
 class TrianguloEscalenoTest(unittest.TestCase):
     def test_ehEscaleno(self):
         a,b,c = 10, 15, 20
         t = Triangulo(a,b,c)
         self.assertTrue(t.ehEscaleno)
-
 
     def test_naoEhEscaleno(self):
         # A = B e A != C
@@ -109,7 +100,6 @@ class TrianguloEscalenoTest(unittest.TestCase):
         a,b,c = 10, 50, 15
         t = Triangulo(a,b,c)
         self.assertFalse(t.ehEquilatero())
-
 
 if __name__ == "__main__":
     unittest.main()
