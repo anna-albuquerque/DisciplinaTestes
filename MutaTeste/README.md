@@ -1,7 +1,7 @@
 # mutatest
 Teste para disciplina de teste
 
-Na pasta raiz dar:
+Na pasta raiz do "MutaTeste" dar:
 
 
 ````
@@ -10,7 +10,7 @@ source venv/bin/activate
 pip install mutatest
 `````
 
-Na pasta do mutatest
+Na pasta "teste"
 `````
 mutatest --src . --testcmds "python -m unittest discover" -n 1
 
