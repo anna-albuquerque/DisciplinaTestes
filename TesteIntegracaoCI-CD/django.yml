@@ -1,0 +1,66 @@
+name: Django CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.12.3]
+
+    services:
+      mysql:
+        image: mysql:9.0
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: senha
+          MYSQL_DATABASE: solarte
+          MYSQL_USER: usuario
+          MYSQL_PASSWORD: senha
+        options: >-
+          --health-cmd "mysqladmin ping --silent"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 3
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r mysite/requirements.txt
+
+    - name: Wait for MySQL to be ready
+      run: |
+        for i in {1..30}; do
+          if mysqladmin ping -h127.0.0.1 --silent; then
+            exit 0
+          fi
+          sleep 5
+        done
+        exit 1
+
+    - name: Run Migrations
+      run: |
+        cd mysite
+        python manage.py migrate
+
+    - name: Run Tests
+      env:
+        DATABASE_URL: mysql://usuario:senha@127.0.0.1/solarte
+      run: |
+        cd mysite
+        python manage.py test
